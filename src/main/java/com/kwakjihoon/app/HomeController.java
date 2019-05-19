@@ -1,8 +1,11 @@
 package com.kwakjihoon.app;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.Executors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +35,21 @@ public class HomeController {
 		String formattedDate = dateFormat.format(date);
 		
 		model.addAttribute("serverTime", formattedDate );
+		
+		return "home";
+	}
+	@RequestMapping("/deploy")
+	public String home2() throws IOException, InterruptedException {
+		ProcessBuilder builder = new ProcessBuilder();
+		
+		builder.command("sh", "-c", "/home/ubuntu/deploy.sh");
+		builder.directory(new File(System.getProperty("user.home")));
+		Process process = builder.start();
+		StreamGobbler streamGobbler = 
+		  new StreamGobbler(process.getInputStream(), System.out::println);
+		Executors.newSingleThreadExecutor().submit(streamGobbler);
+		int exitCode = process.waitFor();
+		assert exitCode == 0;
 		
 		return "home";
 	}
