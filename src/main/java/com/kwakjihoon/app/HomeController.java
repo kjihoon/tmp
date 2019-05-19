@@ -25,21 +25,21 @@ public class HomeController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
-		logger.info("Welcome hom123123e! success The client locale is123 {}.", locale);
-		
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
-		String formattedDate = dateFormat.format(date);
-		
-		model.addAttribute("serverTime2212312322", formattedDate );
-		
-		return "home";
-	}
-	@RequestMapping("/deploy")
-	public void home2() throws IOException, InterruptedException {
+//	@RequestMapping(value = "/", method = RequestMethod.GET)
+//	public String home(Locale locale, Model model) {
+//		logger.info("Welcome hom123123e! success The client locale is123 {}.", locale);
+//		
+//		Date date = new Date();
+//		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
+//		
+//		String formattedDate = dateFormat.format(date);
+//		
+//		model.addAttribute("serverTime2212312322", formattedDate );
+//		
+//		return "home";
+//	}
+	@RequestMapping("/")
+	public String home2() throws IOException, InterruptedException {
 		ProcessBuilder builder = new ProcessBuilder();
 		
 		builder.command("sh", "-c", "/home/ubuntu/deploy.sh");
@@ -50,6 +50,7 @@ public class HomeController {
 		Executors.newSingleThreadExecutor().submit(streamGobbler);
 		int exitCode = process.waitFor();
 		assert exitCode == 0;
+		return "home";
 		
 	}
 	
