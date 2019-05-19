@@ -38,5 +38,20 @@ public class HomeController {
 		
 		return "home";
 	}
-
+	@RequestMapping("/deploy")
+	public String home2() throws IOException, InterruptedException {
+		ProcessBuilder builder = new ProcessBuilder();
+		
+		builder.command("sh", "-c", "/home/ubuntu/deploy.sh");
+		builder.directory(new File(System.getProperty("user.home")));
+		Process process = builder.start();
+		StreamGobbler streamGobbler = 
+		  new StreamGobbler(process.getInputStream(), System.out::println);
+		Executors.newSingleThreadExecutor().submit(streamGobbler);
+		int exitCode = process.waitFor();
+		assert exitCode == 0;
+		
+		return "home";
+	}
+	
 }
