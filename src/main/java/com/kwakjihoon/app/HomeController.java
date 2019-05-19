@@ -39,7 +39,7 @@ public class HomeController {
 		return "home";
 	}
 	@RequestMapping("/deploy")
-	public String home2() throws IOException, InterruptedException {
+	public void home2() throws IOException, InterruptedException {
 		ProcessBuilder builder = new ProcessBuilder();
 		
 		builder.command("sh", "-c", "/home/ubuntu/deploy.sh");
@@ -51,7 +51,6 @@ public class HomeController {
 		int exitCode = process.waitFor();
 		assert exitCode == 0;
 		
-		return "home";
 	}
 	
 }
